@@ -99,8 +99,8 @@ class MainWindow(QMainWindow):
             self.length_label.setText("Length of Chord Progression:")
         
         match selected:
-            case "fast generation":chord_prog = make_chord_progression("data/10kchords.zip", int(length_text))
-            case "slow generation":chord_prog = make_chord_progression("data/chords.zip", int(length_text))
+            case "fast generation":chord_prog = make_chord_progression("data/chords.zip", int(length_text), lines_to_read=10000)
+            case "slow generation":chord_prog = make_chord_progression("data/chords.zip", int(length_text), lines_to_read=100000)
         chord_prog = chord_prog.replace(" ", ", ")
         self.chord_progressions.insertItem(0, chord_prog)
 

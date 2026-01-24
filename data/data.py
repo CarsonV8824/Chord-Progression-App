@@ -1,19 +1,22 @@
 import markovify
 import zipfile
 
-def read_file_lines(zip_path):
+from matplotlib import lines
+
+def read_file_lines(zip_path, lines_to_read:int):
     """Generator that yields one line at a time from a file inside a zip."""
     with zipfile.ZipFile(zip_path, "r") as z:
         txt_name = z.namelist()[0]
         with z.open(txt_name) as f:
             for num, line in enumerate(f):
                 yield line.decode('utf-8')
-                if num >= 100000:
+                print(num)
+                if num + 1 >= lines_to_read:
                     break
 
-def make_chord_progression(file_path: str, length_of_prog: int = 2) -> str:
+def make_chord_progression(file_path: str, length_of_prog: int, lines_to_read:int) -> str:
     """Return a chord progression generated using a Markov model."""
-    lines = "\n".join(read_file_lines(file_path))
+    lines = "\n".join(read_file_lines(file_path, lines_to_read=lines_to_read))
     lines = lines.lstrip()
 
     text_model = markovify.NewlineText(lines)
@@ -28,4 +31,5 @@ def make_chord_progression(file_path: str, length_of_prog: int = 2) -> str:
         test = final.split(" ")
 
     final = final.split(" ")[:length_of_prog]
+
     return " ".join(final)
