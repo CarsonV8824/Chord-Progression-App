@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 
-from data.data import make_chord_progression
+from data.data import make_chord_progressions_threaded
 
 from database.db import Database
 
@@ -88,7 +88,6 @@ class MainWindow(QMainWindow):
 
     def generate_chord(self):
         selected = self.fast_or_slow.currentText()
-
         length_text = self.length_input.text()
 
         if not length_text.isdigit() or int(length_text) <= 0 or int(length_text) > 20:
@@ -98,11 +97,15 @@ class MainWindow(QMainWindow):
         if length_text.isdigit() and int(length_text) > 0:
             self.length_label.setText("Length of Chord Progression:")
         
+        
+        def on_progression_ready(results:str):
+            chord_prog = results[0].replace(" ", ", ")
+            self.chord_progressions.insertItem(0, chord_prog)
+            with Database() as d:
+                d.add_data(chord_prog)
+        
         match selected:
-            case "fast generation":chord_prog = make_chord_progression("data/chords.zip", int(length_text), lines_to_read=10000)
-            case "slow generation":chord_prog = make_chord_progression("data/chords.zip", int(length_text), lines_to_read=100000)
-        chord_prog = chord_prog.replace(" ", ", ")
-        self.chord_progressions.insertItem(0, chord_prog)
-
-        with Database() as d:
-            d.add_data(chord_prog)
+            case "fast generation":
+                make_chord_progressions_threaded("data/chords.zip", int(length_text), lines_to_read=10000, num_progressions=1, callback=on_progression_ready)
+            case "slow generation":
+                make_chord_progressions_threaded("data/chords.zip", int(length_text), lines_to_read=100000, num_progressions=1, callback=on_progression_ready)

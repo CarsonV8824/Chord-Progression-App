@@ -6,6 +6,9 @@ def main():
     app = QApplication(sys.argv)
     window = MainWindow()
 
+    with open("style.qss", "r") as f:
+        app.setStyleSheet(f.read())
+
     window.show()
     sys.exit(app.exec())
 
