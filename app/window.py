@@ -7,7 +7,8 @@ from PyQt6.QtWidgets import (
     QComboBox,
     QTabWidget,
     QListWidget,
-    QLineEdit
+    QLineEdit,
+    QHBoxLayout,
 )
 from PyQt6.QtCore import Qt
 
@@ -46,23 +47,38 @@ class MainWindow(QMainWindow):
         self.fast_or_slow = QComboBox()
         self.fast_or_slow.addItems(["fast generation", "slow generation"])
 
+        confirm_fast_or_slow = QHBoxLayout()
+        confirm_fast_or_slow.addStretch()
+        confirm_fast_or_slow.addWidget(self.fast_or_slow)
+        confirm_fast_or_slow.addStretch()
+
         self.length_label = QLabel("Length of Chord Progression:")
         self.length_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.length_input = QLineEdit()
         self.length_input.setPlaceholderText("Enter a number (e.g., 2)")
+
+        centerd_length_input = QHBoxLayout()
+        centerd_length_input.addStretch()
+        centerd_length_input.addWidget(self.length_input)
+        centerd_length_input.addStretch()
         
         self.confirm_button = QPushButton("generate")
 
         self.confirm_button.clicked.connect(self.generate_chord)
 
+        confirm_button_center = QHBoxLayout()
+        confirm_button_center.addStretch()
+        confirm_button_center.addWidget(self.confirm_button)
+        confirm_button_center.addStretch()
+
         self.chord_progressions = QListWidget()
 
         tab1_layout.addWidget(self.chord_label)
-        tab1_layout.addWidget(self.fast_or_slow)
+        tab1_layout.addLayout(confirm_fast_or_slow)
         tab1_layout.addWidget(self.length_label)
-        tab1_layout.addWidget(self.length_input)
-        tab1_layout.addWidget(self.confirm_button)
+        tab1_layout.addLayout(centerd_length_input)
+        tab1_layout.addLayout(confirm_button_center)
         tab1_layout.addWidget(self.chord_progressions)
         
         

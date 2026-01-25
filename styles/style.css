@@ -1,0 +1,35 @@
+.QWidget {
+    background-color: rgb(200, 200, 200);
+
+
+}
+
+.QPushButton {
+    background-color: rgb(60, 60, 60);
+    color: white;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    padding: 5px 10px;
+    max-width: 150px;
+    text-align: center;
+}
+
+.QPushButton:hover {
+    background-color: rgb(100, 150, 200);
+    color: white;
+}
+
+.QPushButton:pressed {
+    background-color: rgb(50, 50, 50);
+    color: white;
+}
+
+.QComboBox {
+    max-width: 150px;
+    padding: 5px;
+}
+
+.QLineEdit {
+    max-width: 150px;
+    padding: 5px;
+}
