@@ -3,6 +3,12 @@
     border: none;
 }
 
+.QLabel {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+}
+
+
 .QWidget {
     background-color: rgb(200, 200, 200);
     border:none;
@@ -20,7 +26,6 @@
 
 .QPushButton {
     background-color: rgb(220, 220, 220);
-    border: 2px solid rgb(0, 0, 0);
     border-radius: 5px;
     padding: 5px 10px;
     max-width: 150px;
@@ -53,10 +58,6 @@
     
 }
 
-.QComboBox:pressed {
-    background-color: rgb(50, 50, 50);
-}
-
 .QLineEdit {
     background-color: rgb(200, 200, 200);
     max-width: 150px;
@@ -71,26 +72,25 @@
     background-color: rgb(240, 240, 240);
     border: none;
     outline: none;
-    margin-left: 2px;
+    margin-left: 0px;
 }
 
 .QTabWidget::pane {
     background-color: rgb(200, 200, 200);
-    border: 1px solid rgb(150, 150, 150);
+    border: 3px solid rgb(150, 150, 150);
     outline: none;
-    margin-left: 2px;
+    margin-left: 0px;
 }
 
 .QTabBar {
     background-color: rgb(240, 240, 240);
-    border: 1px solid rgb(150, 150, 150);
+    border: 3px solid rgb(150, 150, 150);
     outline: none;
-    margin-left: 2px;
 }
 
 .QTabBar::tab {
     background-color: rgb(200, 200, 200);
-    border: 1px solid rgb(150, 150, 150);
+    border: 3px solid rgb(150, 150, 150);
     outline: none;
     padding: 10px;
 }
@@ -98,6 +98,17 @@
 .QListWidget {
     background-color: rgb(220, 220, 220);
     border: none;
+    color: rgb(50, 50, 50);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.QListWidget::item {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.QListWidget::item:hover {
+    background: rgb(100, 150, 200);
+    color: white;
 }
 
 /* Specific elements styling */
@@ -124,17 +135,20 @@
 
 #chord_label {
     font-size: 20px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    color: rgb(50, 50, 50);  /* Changed from text-color to color */
+    color: rgb(50, 50, 50);  
     margin-bottom: 15px;
 }
 
 #length_label {
     font-size: 16px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    color: rgb(50, 50, 50);  /* Changed from text-color to color */
+    color: rgb(50, 50, 50);  
     margin-top: 15px;
     margin-bottom: 10px;
+}
+
+#data_saved_container {
+    background-color: rgb(240, 240, 240);
+    padding: 15px;
 }

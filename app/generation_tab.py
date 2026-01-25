@@ -32,7 +32,6 @@ class GenerationTab(QWidget):
         main_layout.addWidget(self.left_widget)
 
         # Right container with controls
-        # Right container with controls
         self.right_widget = QWidget()
         self.right_widget.setObjectName("right_widget")
         self.right_layout = QVBoxLayout()
@@ -89,10 +88,11 @@ class GenerationTab(QWidget):
         if length_text.isdigit() and int(length_text) > 0:
             self.length_label.setText("Length of Chord Progression:")
         
+        
         def on_progression_ready(results:str):
             chord_prog = results[0].replace(" ", ", ")
             self.result_list.insertItem(0, chord_prog)
-            self.result_list.item(self.result_list.count() - 1).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.result_list.item(0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             with Database() as d:
                 d.add_data(chord_prog)
         
