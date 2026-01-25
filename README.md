@@ -11,7 +11,7 @@ A desktop application built with PyQt6 that generates chord progressions using M
 - **📏 Customizable Length**: Specify the number of chords in your progression (1-20 chords)
 - **💾 History Management**: Automatically saves generated progressions to a local database
 - **🔄 Multi-threaded Processing**: Non-blocking UI with background generation using thread pools
-- **🎨 Modern Interface**: Clean, dark-themed UI built with PyQt6
+- **🎨 Modern Interface**: Clean, UI built with PyQt6
 
 ## 📋 Prerequisites
 
