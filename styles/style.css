@@ -29,7 +29,25 @@
     padding: 5px;
 }
 
+.QComboBox:hover {
+    background-color: rgb(100, 150, 200);
+    
+}
+
+.QComboBox QAbstractItemView {
+    background-color: rgb(100, 150, 200);
+    
+}
+
+.QComboBox:pressed {
+    background-color: rgb(50, 50, 50);
+}
+
 .QLineEdit {
     max-width: 150px;
     padding: 5px;
+}
+
+.QLineEdit:hover {
+    background-color: rgb(100, 150, 200);
 }

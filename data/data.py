@@ -10,21 +10,31 @@ def read_file_lines(zip_path, lines_to_read:int):
         with z.open(txt_name) as f:
             for num, line in enumerate(f):
                 yield line.decode('utf-8')
+                print(num)
                 if num + 1 >= lines_to_read:
                     break
 
 def make_chord_progression_from_lines(lines: str, length_of_prog: int) -> str:
     """Return a chord progression generated using a Markov model from pre-loaded lines."""
     text_model = markovify.NewlineText(lines)
-    final = text_model.make_short_sentence(min_chars=50, max_chars=100)
+    final = text_model.make_short_sentence(min_chars=10, max_chars=100)
 
     while final is None:
-        final = text_model.make_short_sentence(min_chars=50, max_chars=100)
+        final = text_model.make_short_sentence(min_chars=10, max_chars=100)
 
     test = final.split(" ")
     while len(test) < length_of_prog:
-        final = text_model.make_short_sentence(min_chars=50, max_chars=100)
-        test = final.split(" ")
+        count = 0
+        while True:
+            try:
+                count += 1
+                if count > 100:
+                    break
+                final = text_model.make_short_sentence(min_chars=10, max_chars=100)
+                test = final.split(" ")
+                break
+            except Exception:
+                continue    
 
     final = final.split(" ")[:length_of_prog]
 
