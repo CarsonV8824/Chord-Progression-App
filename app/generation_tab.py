@@ -16,6 +16,12 @@ from data.data import make_chord_progressions_threaded
 
 from database.db import Database
 
+import os, sys
+
+def resource_path(rel_path):
+    base_path = getattr(sys, "_MEIPASS", os.path.dirname(__file__))
+    return os.path.join(base_path, rel_path)
+
 class GenerationTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -96,12 +102,12 @@ class GenerationTab(QWidget):
             with Database() as d:
                 d.add_data(chord_prog)
         
-        filepath = "data/chords.zip"
+        filepath = resource_path("data/chords.zip")
         match complex_or_simple:
             case "popular":
-                filepath = "data/chords.zip"
+                filepath = resource_path("data/chords.zip")
             case "jazz":
-                filepath = "data/complex_chords.zip"
+                filepath = resource_path("data/complex_chords.zip")
 
         match selected:
             case "fast generation":

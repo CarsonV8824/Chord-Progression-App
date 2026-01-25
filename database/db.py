@@ -1,11 +1,15 @@
-import sqlite3
 import os
+import sqlite3
+import sys
 
 class Database:
-
     def __init__(self):
-        dir_path = os.path.join(os.getcwd(), "database/chord-progression-app.db")
-        self.connection = sqlite3.connect(dir_path)
+        base_dir = os.path.dirname(sys.executable) if getattr(sys, "frozen", False) else os.path.dirname(os.path.abspath(__file__))
+        db_dir = os.path.join(base_dir, "database")
+        os.makedirs(db_dir, exist_ok=True)  # ensure folder exists for the db file
+        db_path = os.path.join(db_dir, "chord-progression-app.db")
+
+        self.connection = sqlite3.connect(db_path)
         self.cursor = self.connection.cursor()
         self.__make_table()
 
