@@ -37,10 +37,12 @@ class MainWindow(QMainWindow):
         
         # Tabs
         self.tabs = QTabWidget()
+        self.tabs.setObjectName("tabs_widget")
         self.this_layout.addWidget(self.tabs)
 
         # first tab
         self.generation_tab = GenerationTab()
+        self.generation_tab.setObjectName("generation_tab")
         self.tabs.addTab(self.generation_tab, "Generate Chord Progression")
 
         # second tab

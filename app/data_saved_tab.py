@@ -32,5 +32,6 @@ class dataSavedTab(QWidget):
             chords = db.get_data()
             for chord in chords:
                 self.saved_chords.addItem(f"{chord[0]}: {chord[1]}")  
+                self.saved_chords.item(self.saved_chords.count() - 1).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
     

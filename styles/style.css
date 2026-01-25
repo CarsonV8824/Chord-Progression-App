@@ -1,12 +1,25 @@
+.QMainWindow {
+    background-color: rgb(200, 200, 200);
+    border: none;
+}
+
 .QWidget {
     background-color: rgb(200, 200, 200);
+    border:none;
+}
 
+.QTabBar::tab:hover {
+    background-color: rgb(100, 150, 200);
+    color: white;
+}
 
+.QTabBar::tab:selected {
+    background-color: rgb(50, 50, 50);
+    color: white;
 }
 
 .QPushButton {
-    background-color: rgb(60, 60, 60);
-    color: white;
+    background-color: rgb(220, 220, 220);
     border: 2px solid rgb(0, 0, 0);
     border-radius: 5px;
     padding: 5px 10px;
@@ -25,13 +38,14 @@
 }
 
 .QComboBox {
+    background-color: rgb(200, 200, 200);
     max-width: 150px;
     padding: 5px;
 }
 
 .QComboBox:hover {
     background-color: rgb(100, 150, 200);
-    
+    color: white;
 }
 
 .QComboBox QAbstractItemView {
@@ -44,10 +58,83 @@
 }
 
 .QLineEdit {
+    background-color: rgb(200, 200, 200);
     max-width: 150px;
     padding: 5px;
 }
 
 .QLineEdit:hover {
     background-color: rgb(100, 150, 200);
+}
+
+.QTabWidget {
+    background-color: rgb(240, 240, 240);
+    border: none;
+    outline: none;
+    margin-left: 2px;
+}
+
+.QTabWidget::pane {
+    background-color: rgb(200, 200, 200);
+    border: 1px solid rgb(150, 150, 150);
+    outline: none;
+    margin-left: 2px;
+}
+
+.QTabBar {
+    background-color: rgb(240, 240, 240);
+    border: 1px solid rgb(150, 150, 150);
+    outline: none;
+    margin-left: 2px;
+}
+
+.QTabBar::tab {
+    background-color: rgb(200, 200, 200);
+    border: 1px solid rgb(150, 150, 150);
+    outline: none;
+    padding: 10px;
+}
+
+.QListWidget {
+    background-color: rgb(220, 220, 220);
+    border: none;
+}
+
+/* Specific elements styling */
+
+#tabs_widget {
+    background-color: rgb(180, 180, 180);
+    border: none;
+}
+
+
+#generation_tab {
+    background-color: rgb(220, 220, 220);
+    padding: 15px;
+    border: none;
+}   
+
+#right_widget {
+    background-color: rgb(240, 240, 240);
+}
+
+#left_widget {
+    background-color: rgb(240, 240, 240);
+}
+
+#chord_label {
+    font-size: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: rgb(50, 50, 50);  /* Changed from text-color to color */
+    margin-bottom: 15px;
+}
+
+#length_label {
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: rgb(50, 50, 50);  /* Changed from text-color to color */
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
