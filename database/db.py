@@ -6,7 +6,7 @@ class Database:
     def __init__(self):
         base_dir = os.path.dirname(sys.executable) if getattr(sys, "frozen", False) else os.path.dirname(os.path.abspath(__file__))
         db_dir = os.path.join(base_dir, "database")
-        os.makedirs(db_dir, exist_ok=True)  # ensure folder exists for the db file
+        os.makedirs(db_dir, exist_ok=True)  
         db_path = os.path.join(db_dir, "chord-progression-app.db")
 
         self.connection = sqlite3.connect(db_path)
