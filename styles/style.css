@@ -1,148 +1,153 @@
 .QMessageBox {
-    background: rgb(240, 240, 240);
+    background: rgb(180, 170, 200);
     padding: 12px;
 }
 
 .QMessageBox QLabel#qt_msgbox_label {
-    color: rgb(30, 30, 30);
+    color: rgb(0, 0, 0);
     font-size: 16px;
     font-weight: 700;
     text-align: center;
 }
 
 .QMessageBox QLabel#qt_msgbox_informativelabel {
-    color: rgb(60, 60, 60);
+    color: rgb(0, 0, 0);
     font-size: 14px;
 }
 
 .QMessageBox QLabel#qt_msgbox_detailedtext_label {
-    color: rgb(80, 80, 80);
+    color: rgb(0, 0, 0);
     font-size: 13px;
 }
 
 .QMessageBox QPushButton {
-    background: rgb(50, 50, 50);
-    color: white;
+    background: rgb(180, 170, 200);
+    color: rgb(0, 0, 0);
     padding: 6px 12px;
     border-radius: 4px;
+    border: 1px solid rgb(0, 0, 0);
     min-width: 80px;
 }
 .QMessageBox QPushButton:hover {
-    background: rgb(100, 150, 200);
+    background: rgb(200, 190, 220);
 }
 .QMessageBox QPushButton:pressed {
-    background: rgb(40, 40, 40);
+    background: rgb(160, 150, 180);
 }
 
 .QMainWindow {
-    background-color: rgb(200, 200, 200);
-    border: none;
+    background-color: rgb(180, 170, 200);
+    border: 1px solid rgb(0, 0, 0);
 }
 
 .QLabel {
     font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
+    color: rgb(0, 0, 0);
 }
 
-
 .QWidget {
-    background-color: rgb(200, 200, 200);
-    border:none;
+    background-color: rgb(180, 170, 200);
+    border: none;
 }
 
 .QTabBar::tab:hover {
-    background-color: rgb(100, 150, 200);
-    color: white;
+    background-color: rgb(200, 190, 220);
+    color: rgb(0, 0, 0);
 }
 
 .QTabBar::tab:selected {
-    background-color: rgb(50, 50, 50);
-    color: white;
+    background-color: rgb(200, 190, 220);
+    color: rgb(0, 0, 0);
+    border-bottom: 2px solid rgb(0, 0, 0);
 }
 
 .QPushButton {
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(200, 190, 220);
+    border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     padding: 5px 10px;
     max-width: 150px;
     text-align: center;
+    color: rgb(0, 0, 0);
 }
 
 .QPushButton:hover {
-    background-color: rgb(100, 150, 200);
-    color: white;
+    background-color: rgb(220, 210, 240);
+    color: rgb(0, 0, 0);
 }
 
 .QPushButton:pressed {
-    background-color: rgb(50, 50, 50);
-    color: white;
+    background-color: rgb(170, 160, 190);
+    color: rgb(0, 0, 0);
 }
 
 .QComboBox {
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(0, 0, 0);
     max-width: 150px;
     padding: 5px;
 }
 
 .QComboBox:hover {
-    background-color: rgb(100, 150, 200);
-    color: white;
+    background-color: rgb(180, 170, 200);
+    color: rgb(0, 0, 0);
 }
 
 .QComboBox QAbstractItemView {
-    background-color: rgb(100, 150, 200);
-    
+    background-color: rgb(180, 170, 200);
+    color: rgb(0, 0, 0);
 }
 
 .QLineEdit {
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(0, 0, 0);
     max-width: 150px;
     padding: 5px;
 }
 
 .QLineEdit:hover {
-    background-color: rgb(100, 150, 200);
+    background-color: rgb(245, 245, 245);
 }
 
 .QTabWidget {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(180, 170, 200);
     border: none;
     outline: none;
     margin-left: 0px;
-    
 }
 
 .QTabWidget::pane {
-    background-color: rgb(200, 200, 200);
-    border: 3px solid rgb(150, 150, 150);
+    background-color: rgb(180, 170, 200);
+    border: 2px solid rgb(0, 0, 0);
     outline: none;
     margin-left: 0px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    margin-top: -3px;
+    margin-top: -2px;
 }
 
 .QTabBar {
-    background-color: rgb(240, 240, 240);
-    border: 3px solid rgb(150, 150, 150);
+    background-color: rgb(180, 170, 200);
+    border: 2px solid rgb(0, 0, 0);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     outline: none;
-    
 }
 
 .QTabBar::tab {
-    background-color: rgb(200, 200, 200);
-    border: 3px solid rgb(150, 150, 150);
+    background-color: rgb(180, 170, 200);
+    border: 1px solid rgb(0, 0, 0);
     outline: none;
     padding: 10px;
 }
 
 .QListWidget {
-    background-color: rgb(240, 240, 240);
-    border: none;
-    color: rgb(50, 50, 50);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
     font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -151,61 +156,92 @@
 }
 
 .QListWidget::item:hover {
-    background: rgb(100, 150, 200);
-    color: white;
+    background: rgb(200, 190, 220);
+    color: rgb(0, 0, 0);
+}
+
+.QListWidget QScrollBar:vertical {
+    background-color: rgb(180, 170, 200);
+    width: 12px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.QListWidget QScrollBar::handle:vertical {
+    background-color: rgb(200, 190, 220);
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+.QListWidget QScrollBar::handle:vertical:hover {
+    background-color: rgb(220, 210, 240);
+}
+
+.QListWidget QScrollBar::handle:vertical:pressed {
+    background-color: rgb(170, 160, 190);
+}
+
+.QListWidget QScrollBar::up-arrow:vertical,
+.QListWidget QScrollBar::down-arrow:vertical {
+    background-color: rgb(200, 190, 220);
+    width: 12px;
+    height: 12px;
+}
+
+.QListWidget QScrollBar::add-page:vertical,
+.QListWidget QScrollBar::sub-page:vertical {
+    background-color: rgb(180, 170, 200);
 }
 
 /* Specific elements styling */
 
 #tabs_widget {
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(180, 170, 200);
     border: none;
 }
 
-
 #generation_tab {
-    background-color: rgb(220, 220, 220);
+    background-color: rgb(180, 170, 200);
     padding: 15px;
     border: none;
-}   
+}
 
 #right_widget {
-    background-color: rgb(240, 240, 240);
-    border: 3px solid rgb(240, 240, 240);
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
 }
 
 #left_widget {
-    background-color: rgb(240, 240, 240);
-    border: 3px solid #f0f0f0;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
 }
 
 #results_list_label {
     font-size: 18px;
     font-weight: bold;
-    color: rgb(50, 50, 50);  
+    color: rgb(0, 0, 0);
     margin-bottom: 10px;
 }
 
 #chord_label {
     font-size: 20px;
     font-weight: bold;
-    color: rgb(50, 50, 50);  
+    color: rgb(0, 0, 0);
     margin-bottom: 15px;
 }
 
 #length_label {
     font-size: 16px;
     font-weight: bold;
-    color: rgb(50, 50, 50);  
+    color: rgb(0, 0, 0);
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
 #data_saved_container {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(255, 255, 255);
     padding: 15px;
-    border: 3px solid #f0f0f0;
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 10px;
 }
