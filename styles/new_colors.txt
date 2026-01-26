@@ -1,0 +1,45 @@
+---
+
+## 🎨 **Complete RGB Color Palette From the Image**
+
+### **1. Background Colors**
+These are the soft tones behind the chord boxes.
+
+| Area | Approx. RGB | Notes |
+|------|-------------|-------|
+| Light gray background | **(240, 240, 240)** | Main backdrop |
+| Purple‑tinted staff lines / shading | **(180, 170, 200)** | The muted lavender tone you asked about |
+
+---
+
+### **2. Chord Boxes**
+| Element | Approx. RGB | Notes |
+|---------|-------------|-------|
+| Box fill | **(255, 255, 255)** | Pure white |
+| Box border | **(0, 0, 0)** | Solid black |
+
+---
+
+### **3. Text Colors**
+| Text | Approx. RGB | Notes |
+|------|-------------|-------|
+| “A”, “Dm”, “C” | **(0, 0, 0)** | Standard black |
+
+---
+
+### **4. Arrow Colors**
+| Element | Approx. RGB | Notes |
+|---------|-------------|-------|
+| Arrows between chords | **(0, 0, 0)** | Same black as text |
+
+---
+
+## 🎯 **Summary Palette**
+Here are all unique RGB values in one list:
+
+- **(240, 240, 240)** — light gray background  
+- **(180, 170, 200)** — purple/lavender tone  
+- **(255, 255, 255)** — white box fill  
+- **(0, 0, 0)** — black (text, arrows, borders)
+
+If you want, I can also convert these to **HEX**, **HSL**, or build a **color palette image** for design use.

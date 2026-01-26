@@ -1,3 +1,39 @@
+.QMessageBox {
+    background: rgb(240, 240, 240);
+    padding: 12px;
+}
+
+.QMessageBox QLabel#qt_msgbox_label {
+    color: rgb(30, 30, 30);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.QMessageBox QLabel#qt_msgbox_informativelabel {
+    color: rgb(60, 60, 60);
+    font-size: 14px;
+}
+
+.QMessageBox QLabel#qt_msgbox_detailedtext_label {
+    color: rgb(80, 80, 80);
+    font-size: 13px;
+}
+
+.QMessageBox QPushButton {
+    background: rgb(50, 50, 50);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    min-width: 80px;
+}
+.QMessageBox QPushButton:hover {
+    background: rgb(100, 150, 200);
+}
+.QMessageBox QPushButton:pressed {
+    background: rgb(40, 40, 40);
+}
+
 .QMainWindow {
     background-color: rgb(200, 200, 200);
     border: none;
@@ -25,7 +61,7 @@
 }
 
 .QPushButton {
-    background-color: rgb(220, 220, 220);
+    background-color: rgb(50, 50, 50);
     border-radius: 5px;
     padding: 5px 10px;
     max-width: 150px;
@@ -43,7 +79,7 @@
 }
 
 .QComboBox {
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(50, 50, 50);
     max-width: 150px;
     padding: 5px;
 }
@@ -59,7 +95,7 @@
 }
 
 .QLineEdit {
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(50, 50, 50);
     max-width: 150px;
     padding: 5px;
 }
@@ -73,6 +109,7 @@
     border: none;
     outline: none;
     margin-left: 0px;
+    
 }
 
 .QTabWidget::pane {
@@ -80,12 +117,19 @@
     border: 3px solid rgb(150, 150, 150);
     outline: none;
     margin-left: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: -3px;
 }
 
 .QTabBar {
     background-color: rgb(240, 240, 240);
     border: 3px solid rgb(150, 150, 150);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     outline: none;
+    
 }
 
 .QTabBar::tab {
@@ -96,7 +140,7 @@
 }
 
 .QListWidget {
-    background-color: rgb(220, 220, 220);
+    background-color: rgb(240, 240, 240);
     border: none;
     color: rgb(50, 50, 50);
     font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -127,10 +171,21 @@
 
 #right_widget {
     background-color: rgb(240, 240, 240);
+    border: 3px solid rgb(240, 240, 240);
+    border-radius: 10px;
 }
 
 #left_widget {
     background-color: rgb(240, 240, 240);
+    border: 3px solid #f0f0f0;
+    border-radius: 10px;
+}
+
+#results_list_label {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(50, 50, 50);  
+    margin-bottom: 10px;
 }
 
 #chord_label {
@@ -151,4 +206,6 @@
 #data_saved_container {
     background-color: rgb(240, 240, 240);
     padding: 15px;
+    border: 3px solid #f0f0f0;
+    border-radius: 10px;
 }
