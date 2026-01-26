@@ -8,9 +8,9 @@ import os
 
 def main():
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "styles", "logo.ico")))
+    app.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "styles", "logo.png")))
     window = MainWindow()
-    window.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "styles", "logo.ico")))
+    window.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "styles", "logo.png")))
     window.setObjectName("main_window")
 
     stylesheet_path = os.path.join(os.path.dirname(__file__), "styles", "style.css")
