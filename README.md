@@ -1,6 +1,12 @@
 # 🎵 Chord Progression Generator
 
+<p align="center">
+  <img src="styles/logo.png" alt="Chord Progression Generator Logo" width="200"/>
+</p>
+
 A desktop application built with PyQt6 that generates chord progressions using Markov chain models trained on a dataset of musical chord sequences.
+
+![App Preview](styles/preview.png)
 
 ## ✨ Features
 
@@ -28,25 +34,6 @@ git clone https://github.com/yourusername/Chord-Progression-App.git
 cd Chord-Progression-App
 pip install PyQt6 markovify
 ```
-
-## 📂 Project Structure
-
-Chord-Progression-App/
-│
-├── app/
-│   └── window.py          # Main application window and UI logic
-│
-├── data/
-│   ├── data.py            # Markov model generation and threading logic
-│   └── chords.zip         # Training dataset (not included)
-│
-├── database/
-│   └── db.py              # SQLite database management
-│
-├── styles/
-│   └── style.qss          # Qt stylesheet for UI theming
-│
-└── main.py                # Application entry point
 
 ## 🎮 Usage
 
