@@ -33,6 +33,11 @@ class dataSavedTab(QWidget):
         self.container.setLayout(self.container_layout)
         main_layout.addWidget(self.container)
         
+        self.store_text = QLabel("Saved Chord Progressions:")
+        self.store_text.setObjectName("store_text")
+        self.store_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.container_layout.addWidget(self.store_text)
+
         self.saved_chords = QListWidget()
         self.saved_chords.setObjectName("saved_chords")
         self.container_layout.addWidget(self.saved_chords)

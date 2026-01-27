@@ -47,4 +47,4 @@ class MainWindow(QMainWindow):
 
         # second tab
         self.data_saving_tab = dataSavedTab()
-        self.tabs.addTab(self.data_saving_tab, "Save Chord Progressions")
+        self.tabs.addTab(self.data_saving_tab, "Saved Chord Progressions")
