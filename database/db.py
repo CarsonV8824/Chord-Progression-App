@@ -30,6 +30,12 @@ class Database:
         self.cursor.execute("""SELECT * FROM chord;""")
         data = self.cursor.fetchall()
         return data
+    
+    def delete_data_by_progression(self, chord_progression: str):
+        self.cursor.execute("""
+            DELETE FROM chord WHERE chord_progression = ?;
+        """, (chord_progression,))
+        self.connection.commit()
 
     def __del__(self):
         self.connection.close()

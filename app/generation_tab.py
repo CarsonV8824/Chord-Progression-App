@@ -1,4 +1,3 @@
-from cProfile import label
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -11,10 +10,11 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
     QMessageBox,
+    
 )
 from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
 
-from PyQt6.QtGui import QMovie, QKeyEvent
+from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
 from data.data import make_chord_progressions_threaded
 
@@ -100,7 +100,6 @@ class GenerationTab(QWidget):
         self.right_layout.addWidget(self.load, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.load.hide()
 
-
         self.results_list_label = QLabel("Generated Chord Progressions:")
         self.results_list_label.setObjectName("results_list_label")
         self.results_list_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
@@ -110,6 +109,16 @@ class GenerationTab(QWidget):
         self.result_list.setObjectName("result_list")
         self.left_layout.addWidget(self.result_list)
 
+        delete_shortcut = QShortcut(QKeySequence("Backspace"), self)
+        delete_shortcut.activated.connect(self.delete_selected)
+
+    def delete_selected(self):
+        item = self.result_list.currentItem()
+        if item:
+            row = self.result_list.row(item)
+            self.result_list.takeItem(row)
+            with Database() as d:
+                d.delete_data_by_progression(item.text())
 
     def on_progression_ready(self, results: str):
         chord_prog = results[0].replace(" ", ", ")
@@ -174,7 +183,4 @@ class GenerationTab(QWidget):
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=10000, num_progressions=1, callback=on_progression_ready_thread)
             case "slow generation":
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=100000, num_progressions=1, callback=on_progression_ready_thread)
-
-    
-    
-    
+                

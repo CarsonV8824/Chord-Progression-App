@@ -10,7 +10,9 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
+
+from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
 from data.data import make_chord_progressions_threaded
 
@@ -42,9 +44,28 @@ class dataSavedTab(QWidget):
         self.saved_chords.setObjectName("saved_chords")
         self.container_layout.addWidget(self.saved_chords)
 
+        self.refresh_saved_chords()
+
+        delete_shortcut = QShortcut(QKeySequence("Backspace"), self)
+        delete_shortcut.activated.connect(self.delete_selected)
+
+    def refresh_saved_chords(self):
+        self.saved_chords.clear()
         with Database() as db:
             chords = db.get_data()
-            for chord in chords:
-                self.saved_chords.addItem(f"{chord[0]}: {chord[1]}")  
+            for num, chord in enumerate(chords):
+                self.saved_chords.addItem(f"{num+1}: {chord[1]}")
                 self.saved_chords.item(self.saved_chords.count() - 1).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    def delete_selected(self):
+        item = self.saved_chords.currentItem()
+        if item:
+            row = self.saved_chords.row(item)
+            self.saved_chords.takeItem(row)
+            progression = item.text().split(": ", 1)[1]
+            with Database() as d:
+                d.delete_data_by_progression(progression)
+            self.refresh_saved_chords()
+
+        
     
