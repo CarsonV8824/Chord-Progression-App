@@ -14,7 +14,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
 
-from PyQt6.QtGui import QMovie
+from PyQt6.QtGui import QMovie, QKeyEvent
 
 from data.data import make_chord_progressions_threaded
 
@@ -174,5 +174,7 @@ class GenerationTab(QWidget):
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=10000, num_progressions=1, callback=on_progression_ready_thread)
             case "slow generation":
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=100000, num_progressions=1, callback=on_progression_ready_thread)
+
+    
     
     
