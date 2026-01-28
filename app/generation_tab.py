@@ -1,3 +1,4 @@
+from cProfile import label
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -11,7 +12,9 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QMessageBox,
 )
-from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
+
+from PyQt6.QtGui import QMovie
 
 from data.data import make_chord_progressions_threaded
 
@@ -34,7 +37,6 @@ class GenerationTab(QWidget):
         self.signal_emitter.progression_ready.connect(self.on_progression_ready)
 
         # pop-up message box for notifications
-        self.text_loaded_notification = QLabel("Chord Progression Generated and Saved!")
         self.msg = QMessageBox()
         self.msg.setText("Chord Progression Generated and Saved!")
         self.msg.setWindowTitle("Notification")
@@ -90,6 +92,15 @@ class GenerationTab(QWidget):
 
         self.generate_button.clicked.connect(self.generate_chord)
 
+        self.load = QLabel()
+        self.movie = QMovie(resource_path("styles/Loading_icon.gif"))
+        self.movie.setScaledSize(QSize(100, 75))
+        self.load.setMovie(self.movie)
+        self.movie.start()
+        self.right_layout.addWidget(self.load, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.load.hide()
+
+
         self.results_list_label = QLabel("Generated Chord Progressions:")
         self.results_list_label.setObjectName("results_list_label")
         self.results_list_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
@@ -110,17 +121,25 @@ class GenerationTab(QWidget):
         self.msg.show()
         QTimer.singleShot(2000, self.msg.close)
         self.generate_button.setEnabled(True)
+
+        self.load.hide()
     
     def generate_chord(self):
         self.generate_button.setEnabled(False)
+        self.load.show()
         selected = self.fast_or_slow.currentText()
         length_text = self.length_input.text()
 
         complex_or_simple = self.simple_or_complex.currentText()
 
         if not length_text.isdigit() or int(length_text) <= 3 or int(length_text) > 16:
-            self.length_label.setText("Please enter a valid positive integer for length (4-16).")
-            
+            self.not_right_length = QMessageBox()
+            self.not_right_length.setText("Please enter a valid length between 4 and 16.")
+            self.not_right_length.setWindowTitle("Invalid Length")
+            self.not_right_length.setIcon(QMessageBox.Icon.Warning)
+            self.not_right_length.show()
+            QTimer.singleShot(2000, self.not_right_length.close)
+            self.load.hide()
             self.generate_button.setEnabled(True)
             return
         
