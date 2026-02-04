@@ -16,6 +16,8 @@ from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
 from data.data import make_chord_progressions_threaded
 
+from audio.music import play_chord_concurrently
+
 from database.db import Database
 
 from.generation_tab import GenerationTab
@@ -63,6 +65,12 @@ class dataSavedTab(QWidget):
         self.delete_button.clicked.connect(self.delete_selected)
         right_layout.addWidget(self.delete_button)
 
+        self.play_chord_button = QPushButton("Play Selected Chord")
+        self.play_chord_button.setObjectName("play_chord_button")
+        self.play_chord_button.clicked.connect(self.play_chord)
+        right_layout.addWidget(self.play_chord_button)
+
+
 
     def refresh_saved_chords(self):
         self.saved_chords.clear()
@@ -81,6 +89,19 @@ class dataSavedTab(QWidget):
             with Database() as d:
                 d.delete_data_by_progression(progression)
             self.refresh_saved_chords()
+    
+    def play_chord(self):
+        item = self.saved_chords.currentItem().text()
+        item = item.split(": ", 1)[1]  
+        if item:
+            chord_prog = item.split(", ")
+            if chord_prog:
+                for chord in chord_prog:
+                    try:
+                        chord = chord.replace("min", "m")
+                        play_chord_concurrently(chord)      
+                    except Exception as e:
+                        print(f"Error playing chord in data_saved_tab line 103 {chord}: {e}")
 
         
     

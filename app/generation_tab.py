@@ -18,6 +18,8 @@ from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
 from data.data import make_chord_progressions_threaded
 
+from audio.music import play_chord_concurrently
+
 from database.db import Database
 
 import os, sys
@@ -91,6 +93,14 @@ class GenerationTab(QWidget):
         self.right_layout.addWidget(self.generate_button, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.generate_button.clicked.connect(self.generate_chord)
+
+        self.hear_chord_button = QPushButton("Hear Chord")
+        self.hear_chord_button.setObjectName("hear_chord_button")
+        self.right_layout.addWidget(self.hear_chord_button, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.hear_chord_button.clicked.connect(lambda: self.play_chord())
+
+
+
 
         self.load = QLabel()
         self.movie = QMovie(resource_path("styles/Loading_icon.gif"))
@@ -183,4 +193,15 @@ class GenerationTab(QWidget):
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=10000, num_progressions=1, callback=on_progression_ready_thread)
             case "slow generation":
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=100000, num_progressions=1, callback=on_progression_ready_thread)
-                
+    
+    def play_chord(self):
+        item = self.result_list.currentItem()
+        if item:
+            chord_prog = item.text().split(", ")
+            if chord_prog:
+                for chord in chord_prog:
+                    try:
+                        play_chord_concurrently(chord)      
+                    except Exception as e:
+                        print(f"Error playing chord in generation_tab line 207 {chord}: {e}")
+                        
