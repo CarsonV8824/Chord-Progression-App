@@ -49,6 +49,21 @@ class dataSavedTab(QWidget):
         delete_shortcut = QShortcut(QKeySequence("Backspace"), self)
         delete_shortcut.activated.connect(self.delete_selected)
 
+        #Right container for buttons
+        
+        right_container = QWidget()
+        right_container.setObjectName("right_container_data_saved")
+        right_layout = QVBoxLayout()
+        right_container.setLayout(right_layout)
+        right_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(right_container)
+        
+        self.delete_button = QPushButton("Delete Selected")
+        self.delete_button.setObjectName("delete_button")
+        self.delete_button.clicked.connect(self.delete_selected)
+        right_layout.addWidget(self.delete_button)
+
+
     def refresh_saved_chords(self):
         self.saved_chords.clear()
         with Database() as db:

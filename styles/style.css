@@ -252,3 +252,10 @@
     color: rgb(255, 255, 255);
     margin-bottom: 10px;
 }
+
+#right_container_data_saved {
+    background-color: rgb(50, 55, 80);
+    padding: 15px;
+    border: 2px solid rgb(180, 170, 200);
+    border-radius: 10px;
+}
