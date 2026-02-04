@@ -6,6 +6,7 @@ import pygame
 import tempfile
 import os
 import time
+import threading
 
 def create_temp_wav(freq:float=440, duration:float=1.0, sr:int=44100) -> str:
     """
@@ -26,24 +27,19 @@ def create_temp_wav(freq:float=440, duration:float=1.0, sr:int=44100) -> str:
     write(path, sr, audio.astype(np.float32))
     return path
 
-def play_audio(file_path: str):
-    """
-    Docstring for play_audio
-    
-    :param file_path: Path to the WAV file to be played
-    """
+def play_audio(path):
     pygame.mixer.init()
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play()
+    sound = pygame.mixer.Sound(path)
+    sound.play()
+    time.sleep(sound.get_length())
+    os.remove(path)
 
-    while pygame.mixer.music.get_busy():
-        time.sleep(0.1)
 
-    pygame.mixer.music.stop()
-    pygame.mixer.quit()
-    os.remove(file_path)
-
-if __name__ == "__main__":
+def play_chord_concurrently(chord_str: str="Cmin"):    
+    """
+    Play the notes of a chord concurrently, ensuring correct octave handling.
+    """    # --------------------------
+    # Note name to MIDI conversion utilities
 
     # Canonical 12 pitch classes for MIDI math
     PITCH_CLASSES = [
@@ -89,9 +85,10 @@ if __name__ == "__main__":
     all_notes = []
 
     try:
-        chord_notes = Chord("Bbmin11").components() 
+        chord_notes = Chord(chord_str).components() 
     except Exception as e:
-        print("Error parsing chord:", e)
+        chord_str = chord_str.replace("min", "m")
+        chord_notes = Chord(chord_str).components()
 
     for n in chord_notes:
         midi = note_to_midi(n + str(base_octave))
@@ -106,17 +103,26 @@ if __name__ == "__main__":
     print("Notes:", all_notes)
 
     # --------------------------
-    # Play each note
+    # Play each note concurrently
     # --------------------------
+
+    threads: list[threading.Thread] = []
 
     for note in all_notes:
         freq = librosa.note_to_hz(note)
-        print(note, freq)
         wav_path = create_temp_wav(freq=freq, duration=1.0)
-        play_audio(wav_path)
 
+        # Create a thread that calls your existing play_audio()
+        t = threading.Thread(target=play_audio, args=(wav_path,))
+        threads.append(t)
+        t.start()
 
+    while any(t.is_alive() for t in threads):
+        time.sleep(0.01)
 
+    pygame.mixer.quit()
 
-        
+if __name__ == "__main__":
+    play_chord_concurrently("Bbmin9")
+
 
