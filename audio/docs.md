@@ -1,6 +1,8 @@
-musicpy
+NumPy
 
-https://musicpy.readthedocs.io/en/latest/
+SciPy 
+
+Pygame 
 
 PyChord
 
