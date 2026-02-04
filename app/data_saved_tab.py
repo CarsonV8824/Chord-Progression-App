@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
 )
-from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize, QThread, QEvent
 
 from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
@@ -22,6 +22,23 @@ from database.db import Database
 
 from.generation_tab import GenerationTab
 
+class ChordWorker(QObject):
+    finished = pyqtSignal()
+    error = pyqtSignal(str)
+
+    def __init__(self, chords):
+        super().__init__()
+        self.chords = chords
+
+    def run(self):
+        if self.chords:
+            for chord in self.chords:
+                try:
+                    chord = chord.replace("min", "m")
+                    play_chord_concurrently(chord)      
+                except Exception as e:
+                    print(f"Error playing chord in data_saved_tab line 103 {chord}: {e}")
+        self.finished.emit()
 class dataSavedTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -91,17 +108,31 @@ class dataSavedTab(QWidget):
             self.refresh_saved_chords()
     
     def play_chord(self):
-        item = self.saved_chords.currentItem().text()
-        item = item.split(": ", 1)[1]  
-        if item:
-            chord_prog = item.split(", ")
-            if chord_prog:
-                for chord in chord_prog:
-                    try:
-                        chord = chord.replace("min", "m")
-                        play_chord_concurrently(chord)      
-                    except Exception as e:
-                        print(f"Error playing chord in data_saved_tab line 103 {chord}: {e}")
+        try:
+            chord_prog = self.saved_chords.currentItem().text()
+        except AttributeError:
+            return
+        chord_prog = chord_prog.split(": ", 1)[1]  
+        chord_prog = chord_prog.split(", ")
+        
+        if chord_prog == None or len(chord_prog) == 0 or chord_prog[0] == "":
+            return
+
+        # Create thread + worker
+        self.thread = QThread()
+        self.worker = ChordWorker(chord_prog)
+        self.worker.moveToThread(self.thread)
+
+        # Connect signals
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.worker.error.connect(lambda msg: print("Error:", msg))
+
+        # Start background thread
+        self.thread.start()
 
         
     

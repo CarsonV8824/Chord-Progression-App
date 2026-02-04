@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     
 )
-from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize, QThread
 
 from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
 
@@ -22,7 +22,8 @@ from audio.music import play_chord_concurrently
 
 from database.db import Database
 
-import os, sys
+import os, sys, threading
+
 
 def resource_path(rel_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.dirname(__file__)))
@@ -30,6 +31,25 @@ def resource_path(rel_path):
 
 class ProgressionSignal(QObject):
     progression_ready = pyqtSignal(list)
+
+class ChordWorker(QObject):
+    finished = pyqtSignal()
+    error = pyqtSignal(str)
+
+    def __init__(self, chords):
+        super().__init__()
+        self.chords = chords
+
+    def run(self):
+        for chord in self.chords:
+            try:
+                play_chord_concurrently(chord)
+            except Exception as e:
+                self.error.emit(f"{chord}: {e}")
+
+        self.finished.emit()
+
+
 
 class GenerationTab(QWidget):
     def __init__(self):
@@ -196,12 +216,27 @@ class GenerationTab(QWidget):
     
     def play_chord(self):
         item = self.result_list.currentItem()
-        if item:
+        if not item:
+            return
+        try:
             chord_prog = item.text().split(", ")
-            if chord_prog:
-                for chord in chord_prog:
-                    try:
-                        play_chord_concurrently(chord)      
-                    except Exception as e:
-                        print(f"Error playing chord in generation_tab line 207 {chord}: {e}")
-                        
+        except AttributeError:
+            return
+        if not chord_prog:
+            return
+
+        # Create thread + worker
+        self.thread = QThread()
+        self.worker = ChordWorker(chord_prog)
+        self.worker.moveToThread(self.thread)
+
+        # Connect signals
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.worker.error.connect(lambda msg: print("Error:", msg))
+
+        # Start background thread
+        self.thread.start()
