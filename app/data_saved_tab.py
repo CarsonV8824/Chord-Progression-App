@@ -39,6 +39,7 @@ class ChordWorker(QObject):
                 except Exception as e:
                     print(f"Error playing chord in data_saved_tab line 103 {chord}: {e}")
         self.finished.emit()
+        
 class dataSavedTab(QWidget):
     #Note: I used AI to help me with the threading implementation
     def __init__(self):

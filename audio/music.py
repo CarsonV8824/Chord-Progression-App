@@ -8,7 +8,7 @@ import os
 import time
 import threading
 
-#Note: I used AI to help me with the threading implementation
+#Note: I used AI to help me with the threading implementation and sound generation
 
 # Global lock to ensure only one chord plays at a time (but notes within a chord play together)
 _audio_lock = threading.Lock()
