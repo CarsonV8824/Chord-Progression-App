@@ -1,6 +1,6 @@
 import librosa
 import numpy as np
-from pychord import Chord
+from audio.chord_libary import ChordLibrary
 from scipy.io.wavfile import write
 import pygame
 import tempfile
@@ -85,10 +85,10 @@ def play_chord_concurrently(chord_str: str="Cmin"):
     all_notes = []
 
     try:
-        chord_notes = Chord(chord_str).components() 
+        chord_notes = ChordLibrary().chord_to_notes(chord_str)
     except Exception as e:
-        chord_str = chord_str.replace("min", "m")
-        chord_notes = Chord(chord_str).components()
+        print(f"Error parsing chord '{chord_str}': {e}")
+        return
 
     for n in chord_notes:
         midi = note_to_midi(n + str(base_octave))
@@ -112,7 +112,6 @@ def play_chord_concurrently(chord_str: str="Cmin"):
         freq = librosa.note_to_hz(note)
         wav_path = create_temp_wav(freq=freq, duration=1.0)
 
-        # Create a thread that calls your existing play_audio()
         t = threading.Thread(target=play_audio, args=(wav_path,))
         threads.append(t)
         t.start()
