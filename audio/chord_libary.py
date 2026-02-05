@@ -81,11 +81,14 @@ class ChordLibrary:
         # --- ADD CHORDS ---
         "add9":    [0, 4, 7, 14],
         "madd9":   [0, 3, 7, 14],
+        "minadd9":  [0, 3, 7, 14],
         "add11":   [0, 4, 7, 17],
         "add#11":  [0, 4, 7, 18],
         "add13":   [0, 4, 7, 21],
         "madd11":  [0, 3, 7, 17],
+        "minadd11": [0, 3, 7, 17],
         "madd13":  [0, 3, 7, 21],
+        "minadd13": [0, 3, 7, 21],
 
 
         # --- SUSPENDED + EXTENSIONS ---
