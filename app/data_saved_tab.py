@@ -133,17 +133,6 @@ class dataSavedTab(QWidget):
             self.other_tab.generate_button.setEnabled(True)
             return
 
-        if self._play_thread:
-            try:
-                if self._play_thread.isRunning():
-                    self.play_chord_button.setEnabled(True)
-                    self.other_tab.hear_chord_button.setEnabled(True)
-                    self.other_tab.generate_button.setEnabled(True)
-                    return
-            except RuntimeError:
-                self._play_thread = None
-                self._play_worker = None
-
         self._play_thread = QThread()
         self._play_worker = ChordWorker(chord_prog)
         self._play_worker.moveToThread(self._play_thread)
@@ -164,6 +153,7 @@ class dataSavedTab(QWidget):
         self.play_chord_button.setEnabled(True)
         self.other_tab.hear_chord_button.setEnabled(True)
         self.other_tab.generate_button.setEnabled(True)
+    
     def set_other_tab(self, other_tab):
         """Set reference to the other tab"""
         self.other_tab = other_tab

@@ -254,17 +254,6 @@ class GenerationTab(QWidget):
             self.generate_button.setEnabled(True)
             return
 
-        if self._play_thread:
-            try:
-                if self._play_thread.isRunning():
-                    self.hear_chord_button.setEnabled(True)
-                    self.other_tab.play_chord_button.setEnabled(True)
-                    self.generate_button.setEnabled(True)
-                    return
-            except RuntimeError:
-                self._play_thread = None
-                self._play_worker = None
-
         self._play_thread = QThread()
         self._play_worker = ChordWorker(chord_prog)
         self._play_worker.moveToThread(self._play_thread)
@@ -278,7 +267,6 @@ class GenerationTab(QWidget):
         self._play_worker.error.connect(lambda msg: print("Error:", msg))
 
         self._play_thread.start()
-    
     
     def _clear_play_thread(self):
         self._play_thread = None
