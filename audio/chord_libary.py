@@ -171,6 +171,17 @@ class ChordLibrary:
     def chord_to_notes(self, chord) -> list[str]:
         """Takes a chord name like Cmaj7 and returns a list of notes in chords (in our case [C, E, G, B])"""
         root, quality, bass = self.__parse_chord(chord)
+        
+        #bug with sus4 chords being input as #sus4 or bsus4 sometimes
+        if quality.count("#sus4") == 1:
+            quality = quality.replace("#sus4", "sus4")
+        elif quality.count("bsus4") == 1:
+            quality = quality.replace("bsus4", "sus4")
+        elif quality.count("#sus2") == 1:
+            quality = quality.replace("#sus2", "sus2")
+        elif quality.count("bsus2") == 1:
+            quality = quality.replace("bsus2", "sus2")
+
 
         if quality not in self.CHORD_FORMULAS:
             raise ValueError(f"Unknown chord quality: {quality}")

@@ -13,7 +13,7 @@ def main():
     window.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "styles", "logo.png")))
     window.setObjectName("main_window")
 
-    stylesheet_path = os.path.join(os.path.dirname(__file__), "styles", "style.css")
+    stylesheet_path = os.path.join(os.path.dirname(__file__), "styles", "style.qss")
 
     with open(stylesheet_path, "r") as f:
         style = f.read()

@@ -197,6 +197,38 @@
     background-color: rgb(30, 35, 60);
 }
 
+.QListWidget QScrollBar:horizontal {
+    background-color: rgb(30, 35, 60);
+    width: 12px;
+    border: 1px solid rgb(180, 170, 200);
+}
+
+.QListWidget QScrollBar::handle:horizontal {
+    background-color: rgb(50, 55, 80);
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+.QListWidget QScrollBar::handle:horizontal:hover {
+    background-color: rgb(70, 75, 100);
+}
+
+.QListWidget QScrollBar::handle:horizontal:pressed {
+    background-color: rgb(20, 25, 40);
+}
+
+.QListWidget QScrollBar::left-arrow:horizontal,
+.QListWidget QScrollBar::right-arrow:horizontal {
+    background-color: rgb(50, 55, 80);
+    width: 12px;
+    height: 12px;
+}
+
+.QListWidget QScrollBar::add-page:horizontal,
+.QListWidget QScrollBar::sub-page:horizontal {
+    background-color: rgb(30, 35, 60);
+}
+
 /* Specific elements styling */
 
 #tabs_widget {
