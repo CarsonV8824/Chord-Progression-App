@@ -169,6 +169,7 @@ class ChordLibrary:
         return root, quality, bass
     
     def chord_to_notes(self, chord) -> list[str]:
+        """Takes a chord name like Cmaj7 and returns a list of notes in chords (in our case [C, E, G, B])"""
         root, quality, bass = self.__parse_chord(chord)
 
         if quality not in self.CHORD_FORMULAS:
