@@ -240,3 +240,6 @@ class GenerationTab(QWidget):
 
         # Start background thread
         self.thread.start()
+
+        self.thread.finished.connect(lambda: setattr(self, 'thread', None))
+        self.thread.finished.connect(lambda: setattr(self, 'worker', None))
