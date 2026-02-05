@@ -52,11 +52,15 @@ class ChordWorker(QObject):
 
 
 class GenerationTab(QWidget):
+    #Note: I used AI to help me with the threading implementation
     def __init__(self):
         super().__init__()
 
         self.signal_emitter = ProgressionSignal()
         self.signal_emitter.progression_ready.connect(self.on_progression_ready)
+
+        self._play_thread = None
+        self._play_worker = None
 
         # pop-up message box for notifications
         self.msg = QMessageBox()
@@ -151,20 +155,31 @@ class GenerationTab(QWidget):
                 d.delete_data_by_progression(item.text())
 
     def on_progression_ready(self, results: str):
+        if not results or not isinstance(results, list) or len(results) == 0:
+            self.generate_button.setEnabled(True)
+            self.hear_chord_button.setEnabled(True)
+            self.other_tab.play_chord_button.setEnabled(True)
+            self.load.hide()
+            return
+
         chord_prog = results[0].replace(" ", ", ")
         self.result_list.insertItem(0, chord_prog)
         self.result_list.item(0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         with Database() as d:
             d.add_data(chord_prog)
-        
+
         self.msg.show()
         QTimer.singleShot(2000, self.msg.close)
         self.generate_button.setEnabled(True)
+        self.hear_chord_button.setEnabled(True)
+        self.other_tab.play_chord_button.setEnabled(True)
 
         self.load.hide()
     
     def generate_chord(self):
         self.generate_button.setEnabled(False)
+        self.hear_chord_button.setEnabled(False)
+        self.other_tab.play_chord_button.setEnabled(False)
         self.load.show()
         selected = self.fast_or_slow.currentText()
         length_text = self.length_input.text()
@@ -180,13 +195,14 @@ class GenerationTab(QWidget):
             QTimer.singleShot(2000, self.not_right_length.close)
             self.load.hide()
             self.generate_button.setEnabled(True)
+            self.hear_chord_button.setEnabled(True)
+            self.other_tab.play_chord_button.setEnabled(True)
             return
         
         if length_text.isdigit() and int(length_text) > 0:
             self.length_label.setText("Length of Chord Progression:")
         
         def on_progression_ready_thread(results: str):
-            
             self.signal_emitter.progression_ready.emit(results)
 
         try:
@@ -215,31 +231,63 @@ class GenerationTab(QWidget):
                 make_chord_progressions_threaded(filepath, int(length_text), lines_to_read=100000, num_progressions=1, callback=on_progression_ready_thread)
     
     def play_chord(self):
+        self.hear_chord_button.setEnabled(False)
+        self.other_tab.play_chord_button.setEnabled(False)
+        self.generate_button.setEnabled(False)
+
         item = self.result_list.currentItem()
         if not item:
+            self.hear_chord_button.setEnabled(True)
+            self.other_tab.play_chord_button.setEnabled(True)
+            self.generate_button.setEnabled(True)
             return
         try:
             chord_prog = item.text().split(", ")
         except AttributeError:
+            self.hear_chord_button.setEnabled(True)
+            self.other_tab.play_chord_button.setEnabled(True)
+            self.generate_button.setEnabled(True)
             return
         if not chord_prog:
+            self.hear_chord_button.setEnabled(True)
+            self.other_tab.play_chord_button.setEnabled(True)
+            self.generate_button.setEnabled(True)
             return
 
-        # Create thread + worker
-        self.thread = QThread()
-        self.worker = ChordWorker(chord_prog)
-        self.worker.moveToThread(self.thread)
+        if self._play_thread:
+            try:
+                if self._play_thread.isRunning():
+                    self.hear_chord_button.setEnabled(True)
+                    self.other_tab.play_chord_button.setEnabled(True)
+                    self.generate_button.setEnabled(True)
+                    return
+            except RuntimeError:
+                self._play_thread = None
+                self._play_worker = None
 
-        # Connect signals
-        self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
+        self._play_thread = QThread()
+        self._play_worker = ChordWorker(chord_prog)
+        self._play_worker.moveToThread(self._play_thread)
 
-        self.worker.error.connect(lambda msg: print("Error:", msg))
+        self._play_thread.started.connect(self._play_worker.run)
+        self._play_worker.finished.connect(self._play_thread.quit)
+        self._play_worker.finished.connect(self._play_worker.deleteLater)
+        self._play_thread.finished.connect(self._clear_play_thread)
+        self._play_thread.finished.connect(self._play_thread.deleteLater)
 
-        # Start background thread
-        self.thread.start()
+        self._play_worker.error.connect(lambda msg: print("Error:", msg))
 
-        self.thread.finished.connect(lambda: setattr(self, 'thread', None))
-        self.thread.finished.connect(lambda: setattr(self, 'worker', None))
+        self._play_thread.start()
+    
+    
+    def _clear_play_thread(self):
+        self._play_thread = None
+        self._play_worker = None
+        self.hear_chord_button.setEnabled(True)  
+        self.other_tab.play_chord_button.setEnabled(True)
+        self.generate_button.setEnabled(True)
+
+    def set_other_tab(self, other_tab):
+        """Set reference to the other tab"""
+        self.other_tab = other_tab
+        #play_chord_button

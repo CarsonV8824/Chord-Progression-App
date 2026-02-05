@@ -48,3 +48,7 @@ class MainWindow(QMainWindow):
         # second tab
         self.data_saving_tab = dataSavedTab()
         self.tabs.addTab(self.data_saving_tab, "Saved Chord Progressions")
+
+        # Link tabs for button state management
+        self.generation_tab.set_other_tab(self.data_saving_tab)
+        self.data_saving_tab.set_other_tab(self.generation_tab)

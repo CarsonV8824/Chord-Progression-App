@@ -8,6 +8,11 @@ import os
 import time
 import threading
 
+#Note: I used AI to help me with the threading implementation
+
+# Global lock to ensure only one chord plays at a time (but notes within a chord play together)
+_audio_lock = threading.Lock()
+
 def create_temp_wav(freq:float=440, duration:float=1.0, sr:int=44100) -> str:
     """
     Docstring for create_temp_wav
@@ -38,90 +43,93 @@ def play_audio(path):
 def play_chord_concurrently(chord_str: str="Cmin"):    
     """
     Play the notes of a chord concurrently, ensuring correct octave handling.
-    """    # --------------------------
-    # Note name to MIDI conversion utilities
+    Uses a lock to prevent multiple chords from playing simultaneously.
+    """
+    with _audio_lock:
+        # --------------------------
+        # Note name to MIDI conversion utilities
 
-    # Canonical 12 pitch classes for MIDI math
-    PITCH_CLASSES = [
-        "C", "C#", "D", "D#", "E", "F",
-        "F#", "G", "G#", "A", "A#", "B"
-    ]
+        # Canonical 12 pitch classes for MIDI math
+        PITCH_CLASSES = [
+            "C", "C#", "D", "D#", "E", "F",
+            "F#", "G", "G#", "A", "A#", "B"
+        ]
 
-    # Enharmonic equivalents → canonical names
-    ENHARMONIC_MAP = {
-        "B#": "C",
-        "Db": "C#",
-        "Eb": "D#",
-        "Fb": "E",
-        "E#": "F",
-        "Gb": "F#",
-        "Ab": "G#",
-        "Bb": "A#",
-        "Cb": "B"
-    }
+        # Enharmonic equivalents → canonical names
+        ENHARMONIC_MAP = {
+            "B#": "C",
+            "Db": "C#",
+            "Eb": "D#",
+            "Fb": "E",
+            "E#": "F",
+            "Gb": "F#",
+            "Ab": "G#",
+            "Bb": "A#",
+            "Cb": "B"
+        }
 
-    def normalize_name(name):
-        """Convert enharmonic spellings to canonical pitch class."""
-        return ENHARMONIC_MAP.get(name, name)
+        def normalize_name(name):
+            """Convert enharmonic spellings to canonical pitch class."""
+            return ENHARMONIC_MAP.get(name, name)
 
-    def note_to_midi(note):
-        """Convert note name like 'C#4' to MIDI number."""
-        name = normalize_name(note[:-1])
-        octave = int(note[-1])
-        return PITCH_CLASSES.index(name) + (octave + 1) * 12
+        def note_to_midi(note):
+            """Convert note name like 'C#4' to MIDI number."""
+            name = normalize_name(note[:-1])
+            octave = int(note[-1])
+            return PITCH_CLASSES.index(name) + (octave + 1) * 12
 
-    def midi_to_note_name(midi):
-        """Convert MIDI number back to canonical note name."""
-        name = PITCH_CLASSES[midi % 12]
-        octave = midi // 12 - 1
-        return f"{name}{octave}"
+        def midi_to_note_name(midi):
+            """Convert MIDI number back to canonical note name."""
+            name = PITCH_CLASSES[midi % 12]
+            octave = midi // 12 - 1
+            return f"{name}{octave}"
 
-    # --------------------------
-    # Build chord notes with correct octave handling
-    # --------------------------
+        # --------------------------
+        # Build chord notes with correct octave handling
+        # --------------------------
 
-    base_octave = 4
-    prev_midi = None
-    all_notes = []
+        base_octave = 4
+        prev_midi = None
+        all_notes = []
 
-    try:
-        chord_notes = ChordLibrary().chord_to_notes(chord_str)
-    except Exception as e:
-        print(f"Error parsing chord '{chord_str}': {e}")
-        return
+        try:
+            chord_notes = ChordLibrary().chord_to_notes(chord_str)
+        except Exception as e:
+            print(f"Error parsing chord '{chord_str}': {e}")
+            return
 
-    for n in chord_notes:
-        midi = note_to_midi(n + str(base_octave))
+        for n in chord_notes:
+            midi = note_to_midi(n + str(base_octave))
 
-        # Ensure notes ascend properly
-        if prev_midi is not None and midi <= prev_midi:
-            midi += 12
+            # Ensure notes ascend properly
+            if prev_midi is not None and midi <= prev_midi:
+                midi += 12
 
-        all_notes.append(midi_to_note_name(midi))
-        prev_midi = midi
+            all_notes.append(midi_to_note_name(midi))
+            prev_midi = midi
 
-    print("Notes:", all_notes)
+        print("Notes:", all_notes)
 
-    # --------------------------
-    # Play each note concurrently
-    # --------------------------
+        # --------------------------
+        # Play each note concurrently
+        # --------------------------
 
-    threads: list[threading.Thread] = []
+        pygame.mixer.init()
+        
+        threads: list[threading.Thread] = []
 
-    for note in all_notes:
-        freq = librosa.note_to_hz(note)
-        wav_path = create_temp_wav(freq=freq, duration=1.0)
+        for note in all_notes:
+            freq = librosa.note_to_hz(note)
+            wav_path = create_temp_wav(freq=freq, duration=1.0)
 
-        t = threading.Thread(target=play_audio, args=(wav_path,))
-        threads.append(t)
-        t.start()
+            t = threading.Thread(target=play_audio, args=(wav_path,))
+            threads.append(t)
+            t.start()
 
-    while any(t.is_alive() for t in threads):
-        time.sleep(0.01)
+        while any(t.is_alive() for t in threads):
+            time.sleep(0.01)
 
-    pygame.mixer.quit()
+        pygame.mixer.quit()
 
 if __name__ == "__main__":
     play_chord_concurrently("Bbmin9")
-
-

@@ -1,6 +1,6 @@
 class ChordLibrary:
     """custom chord library for mapping chord names to their constituent notes."""
-    
+    #Note: I used AI to help me make this when I got stuck
     NOTE_TO_INT: dict[str, int] = {
         "C": 0, "B#": 0, "C#": 1, "Db": 1,
         "D": 2, "D#": 3, "Eb": 3,
@@ -27,7 +27,8 @@ class ChordLibrary:
 
         # --- POWER CHORD ---
         "5":       [0, 7],
-        "no3rd":   [0, 7],         # power chord
+        "no3rd":   [0, 7],
+        "no3d":    [0, 7],         # power chord
 
         # --- SIXTH CHORDS ---
         "6":       [0, 4, 7, 9],   # major 6
@@ -177,11 +178,11 @@ class ChordLibrary:
                 n += 12
             ordered.append(n)
 
-        # Convert back to note names (mod 12)
+        # Convert back to note names
         return [self.INT_TO_NOTE[n % 12] for n in ordered]
 
 if __name__ == "__main__":
     
     chord_lib = ChordLibrary()
-    print(chord_lib.chord_to_notes("C/E"))   # ['C', 'E', 'G']
-    print(chord_lib.chord_to_notes("F#dim7/Eb")) # ['F#', 'A', 'C', 'D#']
+    print(chord_lib.chord_to_notes("C/E"))  
+    print(chord_lib.chord_to_notes("F#dim7/Eb"))
