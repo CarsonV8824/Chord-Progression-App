@@ -17,45 +17,45 @@ class ChordLibrary:
 
     CHORD_FORMULAS = {
         # --- TRIADS ---
-        "":        [0, 4, 7],      # major
+        "":        [0, 4, 7],     
         "m":       [0, 3, 7],
-        "min":     [0, 3, 7],      # minor
-        "dim":     [0, 3, 6],      # diminished
-        "aug":     [0, 4, 8],      # augmented
-        "sus2":    [0, 2, 7],      # suspended 2
-        "sus4":    [0, 5, 7],      # suspended 4
+        "min":     [0, 3, 7],    
+        "dim":     [0, 3, 6],      
+        "aug":     [0, 4, 8],      
+        "sus2":    [0, 2, 7],      
+        "sus4":    [0, 5, 7],      
 
         # --- POWER CHORD ---
         "5":       [0, 7],
         "no3rd":   [0, 7],
-        "no3d":    [0, 7],         # power chord
+        "no3d":    [0, 7],        
 
         # --- SIXTH CHORDS ---
-        "6":       [0, 4, 7, 9],   # major 6
-        "m6":      [0, 3, 7, 9],   # minor 6
+        "6":       [0, 4, 7, 9],  
+        "m6":      [0, 3, 7, 9],  
 
         # --- SEVENTH CHORDS ---
-        "7":       [0, 4, 7, 10],  # dominant 7
-        "maj7":    [0, 4, 7, 11],  # major 7
-        "M7":      [0, 4, 7, 11],  # alternate major 7
-        "m7":      [0, 3, 7, 10],  # minor 7
-        "min7":    [0, 3, 7, 10],  # alternate minor 7
-        "mMaj7":   [0, 3, 7, 11],  # minor-major 7
-        "dim7":    [0, 3, 6, 9],   # fully diminished 7
-        "m7b5":    [0, 3, 6, 10],  # half-diminished (ø7)
-        "ø":       [0, 3, 6, 10],  # jazz shorthand
+        "7":       [0, 4, 7, 10],  
+        "maj7":    [0, 4, 7, 11],  
+        "M7":      [0, 4, 7, 11],  
+        "m7":      [0, 3, 7, 10], 
+        "min7":    [0, 3, 7, 10], 
+        "mMaj7":   [0, 3, 7, 11],  
+        "dim7":    [0, 3, 6, 9],   
+        "m7b5":    [0, 3, 6, 10],  
+        "ø":       [0, 3, 6, 10],  
 
         # --- NINTH CHORDS ---
-        "9":       [0, 4, 7, 10, 14],      # dominant 9
-        "maj9":    [0, 4, 7, 11, 14],      # major 9
-        "m9":      [0, 3, 7, 10, 14],      # minor 9
-        "mMaj9":   [0, 3, 7, 11, 14],       # minor-major 9
-        "dim9":    [0, 3, 6, 9, 14],       # diminished 9
+        "9":       [0, 4, 7, 10, 14],      
+        "maj9":    [0, 4, 7, 11, 14],      
+        "m9":      [0, 3, 7, 10, 14],      
+        "mMaj9":   [0, 3, 7, 11, 14],       
+        "dim9":    [0, 3, 6, 9, 14],       
 
                                       
 
         # --- ELEVENTH CHORDS ---
-        "11":      [0, 4, 7, 10, 14, 17],  # dominant 11
+        "11":      [0, 4, 7, 10, 14, 17],  
         "maj11":   [0, 4, 7, 11, 14, 17],
         "m11":     [0, 3, 7, 10, 14, 17],
         "mMaj11":  [0, 3, 7, 11, 14, 17],
@@ -132,7 +132,7 @@ class ChordLibrary:
     }
 
     def __parse_chord(self, chord) -> tuple[str, str, str | None]:
-        # Handle slash chords like C/E
+        
         if "/" in chord:
             chord, bass = chord.split("/")
         else:

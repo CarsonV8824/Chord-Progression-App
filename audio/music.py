@@ -46,8 +46,6 @@ def play_chord_concurrently(chord_str: str="Cmin"):
     Uses a lock to prevent multiple chords from playing simultaneously.
     """
     with _audio_lock:
-        # --------------------------
-        # Note name to MIDI conversion utilities
 
         # Canonical 12 pitch classes for MIDI math
         PITCH_CLASSES = [
@@ -55,7 +53,6 @@ def play_chord_concurrently(chord_str: str="Cmin"):
             "F#", "G", "G#", "A", "A#", "B"
         ]
 
-        # Enharmonic equivalents → canonical names
         ENHARMONIC_MAP = {
             "B#": "C",
             "Db": "C#",
@@ -84,9 +81,6 @@ def play_chord_concurrently(chord_str: str="Cmin"):
             octave = midi // 12 - 1
             return f"{name}{octave}"
 
-        # --------------------------
-        # Build chord notes with correct octave handling
-        # --------------------------
 
         base_octave = 4
         prev_midi = None
