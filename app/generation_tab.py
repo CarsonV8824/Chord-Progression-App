@@ -1,3 +1,4 @@
+from turtle import home
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -10,19 +11,27 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QHBoxLayout,
     QMessageBox,
+    QFileDialog,
     
 )
-from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize, QThread
+from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize, QThread, QStandardPaths
 
 from PyQt6.QtGui import QMovie, QKeyEvent, QShortcut, QKeySequence
+from anyio import Path
+from sympy import content
 
 from data.data import make_chord_progressions_threaded
 
 from audio.music import play_chord_concurrently
 
+from audio.chord_libary import ChordLibrary
+
 from database.db import Database
 
-import os, sys, threading
+import os, sys, threading, time
+
+from pathlib import Path
+
 
 
 def resource_path(rel_path):
@@ -123,7 +132,10 @@ class GenerationTab(QWidget):
         self.right_layout.addWidget(self.hear_chord_button, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.hear_chord_button.clicked.connect(lambda: self.play_chord())
 
-
+        self.export_button = QPushButton("Export Progressions")
+        self.export_button.setObjectName("export_button")
+        self.right_layout.addWidget(self.export_button, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.export_button.clicked.connect(self.export_progressions)
 
 
         self.load = QLabel()
@@ -275,7 +287,44 @@ class GenerationTab(QWidget):
         self.other_tab.play_chord_button.setEnabled(True)
         self.generate_button.setEnabled(True)
 
+
+    def export_progressions(self):
+        # Get the user's Downloads directory
+        def get_downloads_folder():
+            home = Path.home()
+            downloads = home / "Downloads"
+            return str(downloads)
+
+        downloads_dir = get_downloads_folder()
+
+        content = self.result_list.currentItem()
+        if content is None:
+            self.no_progression_msg = QMessageBox()
+            self.no_progression_msg.setText("Please select a chord progression to export.")
+            self.no_progression_msg.setWindowTitle("No Progression Selected")
+            self.no_progression_msg.setIcon(QMessageBox.Icon.Warning)
+            self.no_progression_msg.show()
+            QTimer.singleShot(2000, self.no_progression_msg.close)
+            return
+        content = content.text()
+        file_path = os.path.join(downloads_dir, "chord_progressions.txt")
+
+        with open(file_path, "a", encoding="utf-8") as f:
+            list_of_chords = content.split(", ")
+            f.write(content + "\n" + f"Chords: {[ChordLibrary().chord_to_notes(item) for item in list_of_chords]}" + "\n")
+
+        self.finished_export_msg = QMessageBox()
+        self.finished_export_msg.setText(f"Chord progression exported to {file_path}")
+        self.finished_export_msg.setWindowTitle("Export Successful")
+        self.finished_export_msg.setIcon(QMessageBox.Icon.Information)
+        self.finished_export_msg.show()
+        QTimer.singleShot(2000, self.finished_export_msg.close)
+
+        print("Saved to:", file_path)
+
     def set_other_tab(self, other_tab):
         """Set reference to the other tab"""
         self.other_tab = other_tab
         #play_chord_button
+
+
