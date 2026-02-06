@@ -179,7 +179,7 @@ class ChordLibrary:
         root, quality, bass = self.__parse_chord(chord)
         
         #bug with sus4 chords being input as #sus4 or bsus4 sometimes
-        if quality[0] == "#":
+        if quality[0] == "#" or quality[0] == "b":
             quality = quality[1:]
 
 
