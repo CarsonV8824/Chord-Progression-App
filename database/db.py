@@ -1,12 +1,16 @@
 import os
 import sqlite3
 import sys
+from pathlib import Path
 
 class Database:
     def __init__(self):
-        self.db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "chord-progression-app.db")
+        # Use user's home directory for database (works for .exe and script)
+        app_data_dir = Path.home() / ".chord_progression_app"
+        app_data_dir.mkdir(exist_ok=True)
+        self.db_path = app_data_dir / "chord-progression-app.db"
 
-        self.connection = sqlite3.connect(self.db_path)
+        self.connection = sqlite3.connect(str(self.db_path))
         self.cursor = self.connection.cursor()
         self.__make_table()
 
@@ -22,7 +26,6 @@ class Database:
     def add_data(self, chord_progression:str):
         self.cursor.execute("""
             INSERT INTO chord (chord_progression) VALUES (?);
-
         """, (chord_progression,))
         self.connection.commit()
 
@@ -38,15 +41,16 @@ class Database:
         self.connection.commit()
 
     def __del__(self):
-        self.connection.close()
+        try:
+            self.connection.close()
+        except:
+            pass
 
     def __enter__(self):
         return self
     
     def __exit__(self, exc_type, exc_value, traceback):
-        self.connection.close()
-
-if __name__ == "__main__":
-    test = Database()
-    test.add_data("testing")
-    print(test.get_data())
+        try:
+            self.connection.close()
+        except:
+            pass
