@@ -41,6 +41,9 @@ class ChordLibrary:
         "m7":      [0, 3, 7, 10], 
         "min7":    [0, 3, 7, 10], 
         "mMaj7":   [0, 3, 7, 11],  
+        "minmaj7":   [0, 3, 7, 11],
+        "minMaj7":   [0, 3, 7, 11],
+        "mM7":   [0, 3, 7, 11],
         "dim7":    [0, 3, 6, 9],   
         "m7b5":    [0, 3, 6, 10],  
         "ø":       [0, 3, 6, 10],  
@@ -187,9 +190,17 @@ class ChordLibrary:
         # Build chord notes (pitch classes)
         notes = [(root_val + i) % 12 for i in intervals]
 
+        # ehnarmonic mapping for better tooltips
+        enharmonic_map = {
+            "E#": "F",
+            "B#": "C",
+            "Cb": "B",
+            "Fb": "E",
+        }
+
         # If no slash bass, return normally
         if not bass:
-            return [self.INT_TO_NOTE[n] for n in notes]
+            return [enharmonic_map.get(self.INT_TO_NOTE[n], self.INT_TO_NOTE[n]) for n in notes]
 
         # Apply slash bass
         bass_val = self.NOTE_TO_INT[bass]
@@ -206,7 +217,11 @@ class ChordLibrary:
             ordered.append(n)
 
         # Convert back to note names
-        return [self.INT_TO_NOTE[n % 12] for n in ordered]
+        note_names = [self.INT_TO_NOTE[n % 12] for n in ordered]
+
+        
+        note_names = [enharmonic_map.get(n, n) for n in note_names]
+        return note_names
 
 if __name__ == "__main__":
     

@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QMessageBox,
     QFileDialog,
-    
+    QListWidgetItem
 )
 from PyQt6.QtCore import Qt, QObject, pyqtSignal, QTimer, QSize, QThread, QStandardPaths
 
@@ -176,9 +176,21 @@ class GenerationTab(QWidget):
 
         chord_prog = results[0].replace(" ", ", ")
         self.result_list.insertItem(0, chord_prog)
+        
         self.result_list.item(0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         with Database() as d:
             d.add_data(chord_prog)
+
+        #tool tip
+
+        item = self.result_list.item(0)
+        list_of_chords = item.text().split(", ")
+        try:
+            item.setToolTip("Notes in chords: " + str([ChordLibrary().chord_to_notes(chord) for chord in list_of_chords]).replace("'", ""))
+        except Exception as e:
+            item.setToolTip("Error generating tooltip: " + str(e))
+
+        # show pop-up message
 
         self.msg.show()
         QTimer.singleShot(2000, self.msg.close)
@@ -309,20 +321,28 @@ class GenerationTab(QWidget):
         content = content.text()
         file_path = os.path.join(downloads_dir, "chord_progressions.txt")
 
-        with open(file_path, "a", encoding="utf-8") as f:
-            list_of_chords = content.split(", ")
-            f.write(content + "\n" + f"Chords: {[ChordLibrary().chord_to_notes(item) for item in list_of_chords]}" + "\n")
+        try:
+            with open(file_path, "a", encoding="utf-8") as f:
+                list_of_chords = content.split(", ")
+                f.write(content + "\n" + f"Chords: {[ChordLibrary().chord_to_notes(item) for item in list_of_chords]}" + "\n")
 
-        self.finished_export_msg = QMessageBox()
-        self.finished_export_msg.setText(f"Chord progression exported to {file_path}")
-        self.finished_export_msg.setWindowTitle("Export Successful")
-        self.finished_export_msg.setIcon(QMessageBox.Icon.Information)
-        self.finished_export_msg.show()
-        QTimer.singleShot(2000, self.finished_export_msg.close)
+            self.finished_export_msg = QMessageBox()
+            self.finished_export_msg.setText(f"Chord progression exported to {file_path}")
+            self.finished_export_msg.setWindowTitle("Export Successful")
+            self.finished_export_msg.setIcon(QMessageBox.Icon.Information)
+            self.finished_export_msg.show()
+            QTimer.singleShot(2000, self.finished_export_msg.close)
 
-        print("Saved to:", file_path)
+            print("Saved to:", file_path)
+        except Exception as e:
+            self.export_error_msg = QMessageBox()
+            self.export_error_msg.setText(f"Error exporting progression: {e}")
+            self.export_error_msg.setWindowTitle("Export Error")
+            self.export_error_msg.setIcon(QMessageBox.Icon.Critical)
+            self.export_error_msg.show()
+            QTimer.singleShot(2000, self.export_error_msg.close)
 
-    def set_other_tab(self, other_tab):
+    def set_other_tab(self, other_tab:QWidget):
         """Set reference to the other tab"""
         self.other_tab = other_tab
         #play_chord_button
