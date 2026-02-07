@@ -73,7 +73,7 @@ The application consists of four main components:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Chord-Progression-App.git
+git clone https://github.com/CarsonV8824/Chord-Progression-App.git
 cd Chord-Progression-App
 pip install PyQt6 markovify librosa numpy scipy pygame
 ```
